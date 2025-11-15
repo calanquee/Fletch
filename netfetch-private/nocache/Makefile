@@ -1,0 +1,153 @@
+-include Makefile.local
+
+include ../common/mk/recipes.mk
+
+DEPS :=
+CLEAN :=
+
+##############################################################################
+# Compile, link, and install flags
+
+CC := g++
+#CFLAGS += -std=c++14 -O3 -g -Wall -Werror -march=native -fno-omit-frame-pointer
+# EXTRA_CFLAGS += -DDEBUG_NETFETCH -DDEBUG_NETFETCH_POPSERVER -DNETFETCH_DEBUG -DDEBUG_NETFETCH_HDFS -DNETFETCH_POPSERVER_DEBUG
+CFLAGS += -std=c++17 -O3 -g -Wall -march=native -fno-omit-frame-pointer 
+CFLAGS += $(EXTRA_CFLAGS)
+CFLAGS += -I/home/jz/environments/libhdfs3-downstream/libhdfs3/dist/include/hdfs 
+# server60: CFLAGS += -I/usr/local/include/hdfs
+CFLAGS_SHARED += $(CFLAGS) -fPIC
+LDLIBS += -lpthread -ldl -lstdc++fs -lboost_system -lcommon -L/home/jz/environments/libhdfs3-downstream/libhdfs3/dist/lib/ -lhdfs3  -lssl -lcrypto 
+# server60: LDLIBS += -lpthread -ldl -lstdc++fs -lboost_system -lcommon  -lhdfs3  -lssl -lcrypto
+#-ljemalloc 
+LDLIBS += $(EXTRA_LDLIBS)
+LDFLAGS += -L/home/jz/hadoop-branch-3.2/hadoop-dist/target/hadoop-3.2.5-SNAPSHOT/lib/native
+# LDFLAGS += -L/home/jz/libhdfs3/build/install/lib
+
+LDDIR += -L../boost_1_81_0/install/lib -L/usr/lib/x86_64-linux-gnu -L../common
+INCDIR += -I../boost_1_81_0/install/include -I/usr/include
+
+##############################################################################
+# DPDK configuration
+
+# Prefix for dpdk
+#RTE_SDK ?= /usr/
+# mpdts to compile
+DPDK_PMDS ?= ixgbe i40e tap virtio
+
+DPDK_INCDIR += -I$(RTE_SDK)/$(RTE_TARGET)/include
+DPDK_LDDIR += -L$(RTE_SDK)/$(RTE_TARGET)/lib/
+DPDK_LDLIBS += \
+  -Wl,--whole-archive \
+   $(addprefix -lrte_pmd_,$(DPDK_PMDS)) \
+  -lrte_eal \
+  -lrte_mempool \
+  -lrte_mempool_ring \
+  -lrte_hash \
+  -lrte_ring \
+  -lrte_kvargs \
+  -lrte_ethdev \
+  -lrte_mbuf \
+  -lnuma \
+  -lrte_bus_pci \
+  -lrte_pci \
+  -lrte_cmdline \
+  -lrte_timer \
+  -lrte_net \
+  -lrte_kni \
+  -lrte_bus_vdev \
+  -lrte_gso \
+  -Wl,--no-whole-archive \
+  -ldl \
+  $(EXTRA_LIBS_DPDK)
+
+# DEPS += dpdk_helper.d
+# CLEAN += dpdk_helper.o
+# DPDK_OBJECTS += dpdk_helper.o
+
+INCDIR += $(DPDK_INCDIR)
+LDDIR += $(DPDK_LDDIR)
+
+##############################################################################
+# RocksDB configuration
+
+# ROCKSDB_INCDIR += -I../rocksdb-6.22.1/include
+# ROCKSDB_LDDIR += -L../rocksdb-6.22.1
+# V2: Bourbon
+#ROCKSDB_INCDIR += -I../rocksdb-6.22.1-model-v2/include
+#ROCKSDB_LDDIR += -L../rocksdb-6.22.1-model-v2
+
+# ROCKSDB_LDLIBS = -lrocksdb -lzstd -lbz2 -llz4 -lsnappy -lz -ldl
+ROCKSDB_LDLIBS = -lzstd -lbz2 -llz4 -lsnappy -lz -ldl
+#ROCKSDB_LDLIBS = -lrocksdb_debug -lzstd -lbz2 -llz4 -lsnappy -lz -ldl
+
+# INCDIR += $(ROCKSDB_INCDIR)
+# LDDIR += $(ROCKSDB_LDDIR)
+
+##############################################################################
+
+# MKL configuration
+MKL_INCDIR += -I/opt/intel/mkl/include
+MKL_LDDIR += -L/opt/intel/mkl/lib/intel64 -Wl,-rpath=/opt/intel/mkl/lib/intel64
+MKL_LDLIBS += -lmkl_rt
+
+INCDIR += $(MKL_INCDIR)
+LDDIR += $(MKL_LDDIR)
+
+##############################################################################
+
+# Utils
+
+UTILS_OBJECTS :=
+
+#DEPS += checksum_helper.d
+#CLEAN += checksum_helper.o
+#UTILS_OBJECTS += checksum_helper.o
+
+#DEPS += seq_cache.d
+#CLEAN += seq_cache.o
+#UTILS_OBJECTS += seq_cache.o
+
+##############################################################################
+
+CPPFLAGS += $(INCDIR)
+CPPFLAGS += $(EXTRA_CPPFLAGS)
+LDFLAGS += -no-pie -pthread -g $(LDDIR)
+LDFLAGS += $(EXTRA_LDFLAGS)
+
+##############################################################################
+
+CLIENT_TARGETS :=
+SWITCH_TARGETS :=
+SERVER_TARGETS := 
+
+
+server: server.o $(ROCKSDB_OBJECTS) $(UTILS_OBJECTS)
+	$(LINK) $^ $(LDLIBS) $(ROCKSDB_LDLIBS) -o $@
+DEPS += server.d
+CLEAN += server.o
+SERVER_TARGETS += server
+
+
+##############################################################################
+# Top level targets
+
+all: $(CLIENT_TARGETS) $(SWITCH_TARGETS)  $(SERVER_TARGETS)
+	rm -rf $(CLEAN) $(DEPS)
+
+allclient: $(CLIENT_TARGETS)
+	rm -rf $(CLEAN) $(DEPS)
+
+allswitch: $(SWITCH_TARGETS)
+	rm -rf $(CLEAN) $(DEPS)
+
+allserver: $(SERVER_TARGETS)
+	rm -rf $(CLEAN) $(DEPS)
+
+clean:
+	rm -rf $(CLEAN) $(DEPS) $(CLINET_TARGETS) $(SWITCH_TARGETS) $(SERVER_TARGETS)
+
+.DEFAULT_GOAL := all
+.PHONY: all clean
+
+# Include dependencies
+-include $(DEPS)

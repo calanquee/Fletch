@@ -1,0 +1,36 @@
+program:
+  generate: true
+  clean: false
+  rotation: true
+  dynamic: false
+  needload: false
+  roundidx: stat_r4
+
+experiment:
+  max_requests: 32000000
+  request_pruning_factor: 8
+  depths: [10]
+  cache_capacity: 10000
+  zetas: [0.9]
+  workload_generation_methods: [3]
+  current_methods: [1, 2, 6, 7]
+  client_thread: 128
+  server_logical_num_list: [16]
+  total_files_for_mdtest: 32000000
+  total_number_of_requests: 32000000
+  fs_tree_breath: [4]
+  workloads: [0]
+  max_retry: 10
+
+workloads:
+  - mixed:
+      open_close: 0
+      stat: 1
+      create: 0
+      delete: 0
+      rename: 0
+      chmod: 0
+      readdir: 0
+      statdir: 0
+      mkdir: 0
+      rmdir: 0

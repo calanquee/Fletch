@@ -1,0 +1,74 @@
+program:
+  generate: true
+  clean: false
+  rotation: false
+  dynamic: true
+  needload: false
+  roundidx: exp8_r7
+
+experiment:
+  max_requests: 32000000
+  request_pruning_factor: 2
+  depths: [10]
+  cache_capacity: 10000
+  zetas: [0.9]
+  workload_generation_methods: [3]
+  current_methods: [1, 2, 6, 7]
+  client_thread: 128
+  server_logical_num_list: [2]
+  total_files_for_mdtest: 32000000
+  total_number_of_requests: 32000000
+  fs_tree_breath: [4]
+  workloads: [0, 1, 2, 3]
+  max_retry: 10
+  rules: ["hot-in"]
+
+workloads:
+  # infinifs
+  - mixed:
+      open_close: 52.6
+      stat: 12.4
+      create: 9.58
+      delete: 11.9
+      rename: 9.3
+      chmod: 0.1
+      readdir: 3.9
+      statdir: 0.2
+      mkdir: 0.0042
+      rmdir: 0.0042
+  # asyncfs2
+  - mixed:
+      open_close: 42.8
+      stat: 21.4
+      create: 7.1
+      delete: 7.1
+      rename: 0.0
+      chmod: 0.0
+      readdir: 0.1
+      statdir: 0.1
+      mkdir: 0.1
+      rmdir: 0.1
+  # asyncfs3
+  - mixed:
+      open_close: 43.9
+      stat: 21.9
+      create: 10.9
+      delete: 0.0
+      rename: 0.0
+      chmod: 0.0
+      readdir: 0.1
+      statdir: 0.1
+      mkdir: 0.1
+      rmdir: 0.0
+  # indexfs
+  - mixed:
+      open_close: 84
+      stat: 0
+      create: 4.5
+      delete: 3
+      rename: 3
+      chmod: 1
+      readdir: 0.0
+      statdir: 0.0
+      mkdir: 4.5
+      rmdir: 0.0

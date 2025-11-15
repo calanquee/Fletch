@@ -1,0 +1,93 @@
+[global]
+; 0 netcache 1 netfetch 2 nocache 3 netfetch-design1 4 5 6 cscache
+current_method = 2
+; 0 dynamic and load
+; 1 static with rotation
+mode = 0
+; cache file
+hot_paths_filename = /home/jz/In-Switch-FS-Metadata/netfetch-private/mdtestcpp/workload/caches/freq_31981446_32000000_10_4_0.9_1.out
+; cache size, the number of items in cache file
+hot_path_size = 2158
+; skip path resolution level
+path_resolution_offset = 2
+; server port
+dst_port = 1152
+; server ip
+dst_ip = 192.168.0.110
+; bottleneck server ip
+bottleneck_ip = 192.168.0.110
+; rotation server ip
+rotation_ip = 192.168.0.130
+; file name output it will be process with scripts
+file_out = /home/jz/In-Switch-FS-Metadata/netfetch-private/mdtest/test/file.out
+; dir metadata length
+dir_metadata_length = 24
+; file metadata length
+file_metadata_length = 40
+; user
+uid = 1
+; group
+gid = 1
+; number of logical servers
+server_logical_num = 16
+; bottleneck ns
+bottleneck_id = 0
+; rotation ns
+rotation_id = 1
+; if 1, not send packets
+flag_for_file_out_generation = 1
+
+[dynamic]
+rule = hot-in; hot-out; random; static
+scale = 200
+period = 10
+
+[mixed]
+open/close = 52.5942
+stat = 12.3582
+create = 9.58
+delete = 11.8792
+rename = 9.2926
+chmod = 0.0958
+readdir = 3.9186
+statdir = 0.2772
+mkdir = 0.0042
+rmdir = 0.0042
+
+;[mixed]
+;open_close = 52.6
+;stat = 12.4
+;create = 9.58
+;delete = 11.9
+;rename = 9.3
+;chmod = 0.1
+;readdir = 3.9
+;statdir = 0.2
+;mkdir = 0.0042
+;rmdir = 0.0042
+;
+;[mixed]
+;open_close = 42.8
+;stat = 21.4
+;create = 7.1
+;delete = 7.1
+;rename = 0.0
+;chmod = 0.0
+;readdir = 0.1
+;statdir = 0.1
+;mkdir = 0.1
+;rmdir = 0.1
+;;42.8% open/close, 21.4% stat, 14.2% read, 7.1% write, 7.1% create,7.1% delete, 0.1% mkdir, 0.1% rmdir, 0.1% statdir, 0.1% readdir
+;
+;[mixed]
+;open_close = 43.9
+;stat = 21.9
+;create = 10.9
+;delete = 0.0
+;rename = 0.0
+;chmod = 0.0
+;readdir = 0.1
+;statdir = 0.1
+;mkdir = 0.1
+;rmdir = 0.0
+;;43.9% open/close, 21.9% stat, 12.2% read, 10.9% write, 10.9% create, 0.1% mkdir, 0.1% statdir, 0.1% readdir

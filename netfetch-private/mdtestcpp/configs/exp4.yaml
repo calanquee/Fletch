@@ -1,0 +1,57 @@
+defaults:  
+  - _self_  
+  - override hydra/hydra_logging: disabled  
+  - override hydra/job_logging: disabled  
+  
+hydra:  
+  output_subdir: null  
+  run:  
+    dir: .
+
+program:
+  generate: true
+  clean: false
+  rotation: true
+  dynamic: false
+  needload: false
+  roundidx: exp4_r5
+
+experiment:
+  max_requests: 32000000
+  request_pruning_factor: 10
+  depths: [10]
+  cache_capacity: 10000
+  zetas: [0.9]
+  workload_generation_methods: [3]
+  current_methods: [1, 2, 6, 7]
+  client_thread: 128
+  server_logical_num_list: [16]
+  total_files_for_mdtest: 32000000
+  total_number_of_requests: 32000000
+  fs_tree_breath: [4]
+  workloads: [0]
+  max_retry: 10
+
+workloads:
+  - mixed:
+      open_close: 52.6
+      stat: 12.4
+      create: 9.58
+      delete: 11.9
+      rename: 9.3
+      chmod: 0.1
+      readdir: 3.9
+      statdir: 0.2
+      mkdir: 0.0042
+      rmdir: 0.0042
+  - mixed:
+      open_close: 1
+      stat: 0
+      create: 0
+      delete: 0
+      rename: 0
+      chmod: 0
+      readdir: 0
+      statdir: 0
+      mkdir: 0
+      rmdir: 0

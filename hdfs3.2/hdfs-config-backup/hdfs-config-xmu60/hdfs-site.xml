@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+<property>
+  <name>dfs.nameservices</name>
+  <value>ns1,ns2</value>
+</property>
+
+<property>
+    <name>dfs.namenode.fs-limits.max-directory-items</name>
+    <value>6400000</value>
+</property>
+
+<property>
+  <name>dfs.namenode.rpc-address.ns1</name>
+  <value>10.26.43.163:9001</value>
+</property>
+
+<property>
+  <name>dfs.namenode.rpc-address.ns2</name>
+  <value>10.26.43.164:9001</value>
+</property>
+
+
+<property>
+    <name>dfs.federation.router.rpc-bind-host</name>
+    <value>10.26.43.163</value>
+</property>
+
+<property>
+    <name>dfs.federation.router.rpc-port</name>
+    <value>8888</value>
+</property>
+
+<!-- Router RPC address for clients -->
+<property>
+    <name>dfs.federation.router.rpc-address</name>
+    <value>10.26.43.163:8888</value>
+</property>
+
+
+<property>
+  <name>dfs.client.failover.random.order</name>
+  <value>true</value>
+</property>
+
+<property>
+  <name>dfs.federation.router.mount-table.cache.update</name>
+  <value>true</value>
+</property>
+
+<property>
+  <name>dfs.federation.router.mount-table.cache.enable</name>
+  <value>false</value>
+</property>
+
+<property>
+    <name>dfs.federation.router.connection.pool-size</name>
+    <value>10</value>
+</property>
+
+
+<property>
+    <name>dfs.namenode.ip-proxy-users</name>
+    <value>hdfs</value>
+</property>
+
+<property>
+  <name>dfs.federation.router.monitor.namenode</name>
+  <value>ns2,ns1</value>
+</property>
+
+<property>
+  <name>dfs.federation.router.monitor.localnamenode.enable</name>
+  <value>false</value>
+</property>
+
+<property>
+  <name>dfs.federation.router.admin-address</name>
+  <value>10.26.43.163:8111</value>
+</property>
+
+<property>
+  <name>dfs.federation.router.admin-bind-host</name>
+  <value>10.26.43.163</value>
+</property>
+
+<property>
+  <name>dfs.federation.router.file.resolver.client.class</name>
+  <value>org.apache.hadoop.hdfs.server.federation.resolver.MultipleDestinationMountTableResolver</value>
+</property>
+
+
+<property>
+  <name>dfs.namenode.name.dir.ns1</name>
+  <value>/home/jz/hadoop-branch-3.2/hadoop-dist/target/hadoop-3.2.5-SNAPSHOT/tmp/dfs/name/ns1</value>
+</property>
+
+
+<property>
+  <name>dfs.namenode.name.dir.ns2</name>
+  <value>/home/jz/hadoop-branch-3.2/hadoop-dist/target/hadoop-3.2.5-SNAPSHOT/tmp/dfs/name/ns2</value>
+</property>
+
+<property>
+  <name>dfs.datanode.data.dir</name>
+  <value>/home/jz/hadoop-branch-3.2/hadoop-dist/target/hadoop-3.2.5-SNAPSHOT/tmp/dfs/data</value>
+</property>
+
+<property>
+  <name>dfs.datanode.use.datanode.hostname</name>
+  <value>false</value>
+</property>
+
+<property>
+  <name>dfs.namenode.accesstime.precision</name>
+  <value>1</value>
+</property>
+
+<property>
+    <name>dfs.federation.router.quota.enabled</name>
+    <value>true</value>
+</property>
+
+
+<property>
+    <name>dfs.federation.router.mount-table.cache.update</name>
+    <value>true</value>
+</property>
+
+
+<property>
+  <name>dfs.federation.router.http.enable</name>
+  <value>false</value>
+</property>
+
+<property>
+  <name>dfs.federation.router.https.enable</name>
+  <value>false</value>
+</property>
+
+
+<property>
+  <name>dfs.replication</name>
+  <value>1</value>
+</property>
+
+<property>
+  <name>dfs.blocksize</name>
+  <value>67108864</value>
+<!--
+<value>1048576</value>
+-->
+</property>
+
+<property>
+  <name>io.file.buffer.size</name>
+  <value>1048576</value>
+<!--
+<value>131072</value>
+-->
+</property>
+
+<property>
+  <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
+  <value>false</value>
+</property>
+
+<property>
+  <name>dfs.webhdfs.enabled</name>
+  <value>false</value>
+</property>
+
+<property>
+  <name>dfs.namenode.handler.count</name>
+  <value>1</value>
+</property>
+
+
+</configuration>
